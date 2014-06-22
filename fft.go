@@ -16,7 +16,6 @@ func main() {
 	const outputSize = (1 << (nbits - 1)) + 1
 
 	input := [inputSize]float32{}
-	//    output := [outputSize]float32{}
 
 	cx := C.av_rdft_init(nbits, C.DFT_R2C)
 

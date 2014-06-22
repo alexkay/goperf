@@ -1,5 +1,7 @@
 # Comparing C to Go
 
+A few performance tests to evaluate [Go](http://golang.org/) for [Spek](http://spek.cc/).
+
 ## FFT calculations
 
 Call `av_rdf_calc()` 1M times.
@@ -7,6 +9,9 @@ Call `av_rdf_calc()` 1M times.
 * **C**: 7.465
 * **Go**: 7.548 (using Cgo)
 
+Using [go-dsp](https://github.com/mjibson/go-dsp).
+
+* **Go**: 164.15
 
 ## Building and running
 
