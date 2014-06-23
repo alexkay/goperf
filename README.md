@@ -13,6 +13,11 @@ Using [go-dsp](https://github.com/mjibson/go-dsp).
 
 * **Go**: 164.15
 
+## FFT + magnitudes
+
+* **C**: 14.361
+* **Go**: 18.592 (mag calc alone is 1.6 slower than in C)
+
 ## Building and running
 
 * `gcc48 -O3 -std=c99 -lavformat -lavcodec -lavutil -lm fft.c -o fft && time ./fft`
