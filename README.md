@@ -6,9 +6,10 @@ A few performance tests to evaluate [Go](http://golang.org/) for [Spek](http://s
 
 Call `av_rdf_calc()` 1M times.
 
-* **C**: 7.465
-* **Go**: 7.548 (using Cgo)
+* **C**: 7.465 (using lavc)
+* **Go**: 7.548 (using lavc via Cgo)
 * **Go**: 164.15 (using [go-dsp](https://github.com/mjibson/go-dsp))
+* **Go**: 124.98 (stripped down [go-dsp](https://github.com/mjibson/go-dsp))
 
 ## FFT + magnitudes
 

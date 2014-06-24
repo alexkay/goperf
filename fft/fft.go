@@ -39,17 +39,3 @@ func FFT(x []complex128) []complex128 {
 
 	panic("len must be the power of 2")
 }
-
-var (
-	worker_pool_size = 0
-)
-
-// SetWorkerPoolSize sets the number of workers during FFT computation on multicore systems.
-// If n is 0 (the default), then GOMAXPROCS workers will be created.
-func SetWorkerPoolSize(n int) {
-	if n < 0 {
-		n = 0
-	}
-
-	worker_pool_size = n
-}

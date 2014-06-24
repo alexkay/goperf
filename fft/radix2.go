@@ -18,7 +18,6 @@ package fft
 
 import (
 	"math"
-	"runtime"
 	"sync"
 )
 
@@ -72,10 +71,6 @@ func hasRadix2Factors(idx int) bool {
 	return radix2Factors[idx] != nil
 }
 
-type fft_work struct {
-	start, end int
-}
-
 // radix2FFT returns the FFT calculated using the radix-2 DIT Cooley-Tukey algorithm.
 func radix2FFT(x []complex128) []complex128 {
 	lx := len(x)
@@ -84,69 +79,29 @@ func radix2FFT(x []complex128) []complex128 {
 	t := make([]complex128, lx) // temp
 	r := reorderData(x)
 
-	var blocks, stage, s_2 int
+	for stage := 2; stage <= lx; stage <<= 1 {
+		blocks := lx / stage
+		s_2 := stage / 2
 
-	jobs := make(chan *fft_work, lx)
-	wg := sync.WaitGroup{}
-
-	num_workers := worker_pool_size
-	if (num_workers) == 0 {
-		num_workers = runtime.GOMAXPROCS(0)
-	}
-
-	idx_diff := lx / num_workers
-	if idx_diff < 2 {
-		idx_diff = 2
-	}
-
-	worker := func() {
-		for work := range jobs {
-			for nb := work.start; nb < work.end; nb += stage {
-				if stage != 2 {
-					for j := 0; j < s_2; j++ {
-						idx := j + nb
-						idx2 := idx + s_2
-						ridx := r[idx]
-						w_n := r[idx2] * factors[blocks*j]
-						t[idx] = ridx + w_n
-						t[idx2] = ridx - w_n
-					}
-				} else {
-					n1 := nb + 1
-					rn := r[nb]
-					rn1 := r[n1]
-					t[nb] = rn + rn1
-					t[n1] = rn - rn1
+		for nb := 0; nb < lx; nb += stage {
+			if stage != 2 {
+				for j := 0; j < s_2; j++ {
+					idx := j + nb
+					idx2 := idx + s_2
+					ridx := r[idx]
+					w_n := r[idx2] * factors[blocks*j]
+					t[idx] = ridx + w_n
+					t[idx2] = ridx - w_n
 				}
+			} else {
+				n1 := nb + 1
+				rn := r[nb]
+				rn1 := r[n1]
+				t[nb] = rn + rn1
+				t[n1] = rn - rn1
 			}
-			wg.Done()
 		}
-	}
 
-	for i := 0; i < num_workers; i++ {
-		go worker()
-	}
-	defer close(jobs)
-
-	for stage = 2; stage <= lx; stage <<= 1 {
-		blocks = lx / stage
-		s_2 = stage / 2
-
-		for start, end := 0, stage; ; {
-			if end-start >= idx_diff || end == lx {
-				wg.Add(1)
-				jobs <- &fft_work{start, end}
-
-				if end == lx {
-					break
-				}
-
-				start = end
-			}
-
-			end += stage
-		}
-		wg.Wait()
 		r, t = t, r
 	}
 
