@@ -8,10 +8,7 @@ Call `av_rdf_calc()` 1M times.
 
 * **C**: 7.465
 * **Go**: 7.548 (using Cgo)
-
-Using [go-dsp](https://github.com/mjibson/go-dsp).
-
-* **Go**: 164.15
+* **Go**: 164.15 (using [go-dsp](https://github.com/mjibson/go-dsp))
 
 ## FFT + magnitudes
 
@@ -20,7 +17,7 @@ Using [go-dsp](https://github.com/mjibson/go-dsp).
 
 ## Building and running
 
-* `gcc48 -O3 -std=c99 -lavformat -lavcodec -lavutil -lm fft.c -o fft && time ./fft`
-* `go fmt fft.go && go build fft.go && time ./fft`
+* `gcc48 -O3 -std=c99 -lavformat -lavcodec -lavutil -lm fft-lavc.c -o fft-lavc && time ./fft-lavc`
+* `go fmt fft-lavc.go && go build fft-lavc.go && time ./fft-lavc`
 
 

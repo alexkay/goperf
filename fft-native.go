@@ -3,7 +3,7 @@ package main
 import (
 	"math"
 
-	"github.com/mjibson/go-dsp/fft"
+	"github.com/alexkay/goperf/fft"
 )
 
 func main() {
