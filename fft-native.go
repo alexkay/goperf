@@ -1,12 +1,28 @@
 package main
 
 import (
+	"flag"
+	"log"
 	"math"
+	"os"
+	"runtime/pprof"
 
 	"github.com/alexkay/goperf/fft"
 )
 
+var cpuprofile = flag.String("cpuprofile", "", "write cpu profile to file")
+
 func main() {
+	flag.Parse()
+	if *cpuprofile != "" {
+		f, err := os.Create(*cpuprofile)
+		if err != nil {
+			log.Fatal(err)
+		}
+		pprof.StartCPUProfile(f)
+		defer pprof.StopCPUProfile()
+	}
+
 	const N = 1000000 // 1M
 	const nbits = 11
 	const inputSize = 1 << nbits
