@@ -3,6 +3,8 @@
 
 #include <libavcodec/avfft.h>
 
+#define M_PI 3.14159265358979323846264338327
+
 int main() {
     int N = 1000000; // 1M
     int nbits = 11;

@@ -6,23 +6,23 @@ A few performance tests to evaluate [Go](http://golang.org/) for [Spek](http://s
 
 Call `av_rdf_calc()` 1M times.
 
-* **C**: 7.465 (using lavc)
-* **Go**: 7.548 (using lavc via Cgo)
-* **Go**: 1.892 (using lavc via Cgo in 4 goroutines)
+* **C**: 3.692 (using lavc)
+* **Go**: 3.811 (using lavc via Cgo)
+* **Go**: 0.978 (using lavc via Cgo in 4 goroutines)
 
 Call `fft.FFTReal()` from [go-dsp](https://github.com/mjibson/go-dsp) 1M times.
 
-* **Go**: 164.15 (stock)
-* **Go**: 124.98 (stripped down)
+* **Go**: 56.587 (stripped down)
 
 ## FFT + magnitudes
 
-* **C**: 14.361
-* **Go**: 18.592 (mag calc alone is 1.6 times slower than in C)
+* **C**: 7.113
+* **Go**: 10.127
+* **Go**: 2.469 (4 goroutines)
 
 ## Building and running
 
-* `gcc48 -O3 -std=c99 -lavformat -lavcodec -lavutil -lm fft-lavc.c -o fft-lavc && time ./fft-lavc`
-* `go fmt fft-lavc.go && go build fft-lavc.go && time ./fft-lavc`
+* `gcc -O3 -std=c99 -lavformat -lavcodec -lavutil -lm fft-lavc.c -o fft-lavc && time ./fft-lavc`
+* `go build fft-lavc.go && time ./fft-lavc`
 
 
